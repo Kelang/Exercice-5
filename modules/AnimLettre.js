@@ -6,7 +6,7 @@ import {
 export class AnimLettre {
 
     /**
-     * Classe permettant de créer et d'animer une introduction
+     * Classe permettant de créer et d'animer une introduction lors du chargement de la page
      * @param {object} o - contient l'ensemble des mots d'intro
      * @param {DOMElement} elementParent - Conteneur de l'animation
      * @param {function} fonction - l'adresse de la fonction à exécuter après l'animation
@@ -14,50 +14,56 @@ export class AnimLettre {
      }}
      */
 
-    constructor(lesLettres, elementParent, fonction) {
+    constructor(o, elementParent, fonction) {
         //Récupérer les valeurs passées en paramètre			
-        this.lesLettres = lesLettres;
-
-        this.elmParent = elementParent;
-        this.anim_lettres(this.lesLettres);
-        this.fonction = fonction;
+        this.titrePrincipal = o.titrePrincipal;
+        this.titreSecondaire = o.titreSecondaire
+        this.titreTernaire = o.titreTernaire
+        this.description = o.description
+        this.elmParent = elementParent
+        this.integrerIntro()
+        this.fonction = fonction
     }
 
 
-    anim_lettres(lesLettres) {
+    integrerIntro() {
         /* Création des élément DOM qui seront animés. 
         Les éléments seront intégré dans le conteneur elmParent
         */
-        let elmConteneur = this.creerElement(
-            this.elmParent,
+        console.log('introduction')
+        let elmConteneur = this.creerElement(this.elmParent,
             'section',
             '',
-            'mot'
-        );
+            'introduction')
 
-        let i = 0;
-        const tabCouleur = ['#CC231E', '#235E6F', '#009900', '#34A65F', '#0F8A5F', '#F5624D']
-        let nbLettres = lesLettres.length;
+        let elmPrincipale = this.creerElement(elmConteneur,
+            'div',
+            this.titrePrincipal,
+            'rectangle')
 
-        for (let uneLettre of lesLettres) {
+        let elmSecondaire = this.creerElement(elmConteneur,
+            'div',
+            this.titreSecondaire,
+            'rectangle')
 
-            let elmLettre = this.creerElement(
-                elmConteneur,
-                'div',
-                uneLettre
-            );
 
-            elmLettre.style.animationDelay = (i * 0.5) + "s";
-            elmLettre.style.color = tabCouleur[(i++) % 7]
+        let elmTernaire = this.creerElement(elmConteneur,
+            'div',
+            this.titreTernaire,
+            'rectangle')
 
-        } // fin for
+        let elmDescription = this.creerElement(elmConteneur,
+            'div',
+            this.description,
+            'rectangle')
 
-        //Quand l'animation de la dernière lettre du mot joyeux est terminée la fonction animerNoel est appelée	
-        // lesLettres[nbLettres - 1].addEventListener("animationend", animationLettres, false);
-
+        let elmBouton = this.creerElement(elmConteneur,
+            'button',
+            'Commencer',
+            'bouton')
         /* On garde une référence sur la fonction terminerIntro */
-        let refTerminerIntro = this.terminerIntro.bind(this);
-        // elmBouton.addEventListener('mousedown', this.terminerIntro.bind(this));
+        let refTerminerIntro = this.terminerIntro.bind(this)
+        elmBouton.addEventListener('mousedown', this.terminerIntro.bind(this))
     }
 
     creerElement(elmParent, balise, contenu, classCSS) {
@@ -79,7 +85,6 @@ export class AnimLettre {
     passerVersAnimationSuivante(evt) {
         Util.detruireTousLesNoeud(this.elmParent, this.elmParent)
         this.fonction()
-
     }
 
 }
