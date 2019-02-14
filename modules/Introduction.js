@@ -62,8 +62,8 @@ export class Introduction {
             'Commencer',
             'bouton')
         /* On garde une référence sur la fonction terminerIntro */
-        let refTerminerIntro = this.terminerIntro.bind(this)
-        elmBouton.addEventListener('mousedown', this.terminerIntro.bind(this))
+        let refTerminerIntro = this.terminerIntro.bind(this);
+        elmBouton.addEventListener('mousedown', this.terminerIntro.bind(this));
     }
 
     creerElement(elmParent, balise, contenu, classCSS) {
@@ -85,6 +85,7 @@ export class Introduction {
     passerVersAnimationSuivante(evt) {
         Util.detruireTousLesNoeud(this.elmParent, this.elmParent)
         this.fonction()
+
     }
 
 }
